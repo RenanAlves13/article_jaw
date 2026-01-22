@@ -1,0 +1,12 @@
+Here's the list of microservices derived from the modular monolith requirements in CSV format:
+
+```csv
+Microservice,Responsibilities,Communicates With
+User Service,User registration; User authentication; Password hashing and salting,Database Service; API Gateway
+API Gateway,Session management; Request routing; Authentication validation; Serves web pages,User Service; Media Service; Database Service
+Media Service,Audio file browsing; Download request processing; Upload coordination; Bulk download packaging,Database Service; Storage Service; Watermarking Service; Re-encoding Service
+Watermarking Service,Audio file watermarking; File re-encoding for watermarking,Storage Service; Media Service
+Re-encoding Service,Audio file format conversion; Bit rate adjustment,Storage Service; Media Service
+Database Service,User data storage; Audio metadata storage; Query execution,User Service; Media Service; API Gateway
+Storage Service,Audio file storage; File retrieval; File management,Media Service; Watermarking Service; Re-encoding Service
+```

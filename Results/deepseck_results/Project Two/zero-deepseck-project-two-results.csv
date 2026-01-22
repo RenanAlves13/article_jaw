@@ -1,0 +1,17 @@
+Here's the list of microservices derived from the modular monolith requirements:
+
+```csv
+Microservice,Responsibilities,Communicates With
+UserService,User registration; User authentication; Password hashing and salting,UserDBAdapter; SessionService
+SessionService,Manage user sessions; Session validation,UserService; FrontendGateway
+FrontendGateway,Serve web pages (registration/login); Route user requests; Forward to audio listing after login,UserService; SessionService; MediaService
+MediaService,Coordinate media operations; Process download requests; Fetch audio files; Forward watermarked files,TagWatermarkingService; ReEncoderService; PackagingService; MediaAccessService
+TagWatermarkingService,Digitally watermark audio files; Re-encode files before watermarking,MediaService; ReEncoderService
+ReEncoderService,Convert audio files to different bit rates; Reduce file sizes,MediaService; TagWatermarkingService
+PackagingService,Archive multiple audio files into compressed files; Handle bulk downloads,MediaService
+MediaAccessService,Manage audio file metadata; Store uploaded files; Fetch available audio files list,AudioAccessService; DataStorageService
+AudioAccessService,Create queries for audio file retrieval; Database access for audio metadata,DatabaseService
+UserDBAdapterService,Encapsulate database access for user data; Create user-related queries,DatabaseService
+DatabaseService,Store user information; Store salted password hashes; Store audio file metadata,UserDBAdapterService; AudioAccessService
+DataStorageService,Physical storage for audio files; Decouple storage from database,MediaAccessService
+```

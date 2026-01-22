@@ -1,0 +1,24 @@
+Based on the provided requirements, here is the list of microservices in CSV format:
+
+```csv
+Microservice,Responsibilities,Communicates With
+Gateway,Server-side web front end; Delivers registration/login pages; Manages user sessions; Allows browsing/downloading/uploading audio files; Forwards to audio listing after login,UserService; MediaService
+UserService,Handles user registration and authentication; Implements password hashing and salting; Database access for user data,Database; Gateway
+MediaService,Central business logic coordination; Processes download requests; Fetches audio files from storage; Forwards watermarked files to users,Gateway; WatermarkingService; PackagingService; MediaAccessService
+WatermarkingService,Digitally watermarks audio files; Re-encodes files before watermarking,MediaService; ReEncoderService
+ReEncoderService,Converts audio files to different bit rates,WatermarkingService
+PackagingService,Archives multiple audio files into single compressed file,MediaService
+MediaAccessService,Database access for audio file metadata; Fetches list of available audio files; Stores uploaded files in storage,Database; DataStorageService; Gateway
+DataStorageService,Physical storage for audio files; Decouples audio file storage from database,MediaAccessService
+Database,Stores user information, salted password hashes, and audio file metadata,UserService; MediaAccessService
+```
+
+**Key Design Decisions:**
+1. **Gateway Service**: Combines Facade responsibilities with user-facing media operations
+2. **UserService**: Combines UserManagement and UserDBAdapter responsibilities
+3. **MediaService**: Acts as orchestrator for media operations
+4. **Database**: Kept as a separate service for data persistence
+5. **DataStorageService**: Separates file storage concerns from metadata management
+6. **MediaAccessService**: Handles all audio metadata and file access coordination
+
+This structure maintains separation of concerns while minimizing inter-service communication overhead.

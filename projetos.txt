@@ -1,0 +1,310 @@
+MEDIASTORE
+
+### 1. **Facade Component**
+   - **Responsibilities**: 
+     - Serves as the server-side web front end.
+     - Delivers registration and login pages to users.
+     - Manages user sessions.
+     - Allows users to browse, download, and upload audio files.
+     - Forwards users to the audio file listing page after login.
+
+### 2. **UserManagement Component**
+   - **Responsibilities**: 
+     - Handles user registration and authentication.
+     - Implements password hashing and salting for security.
+
+### 3. **UserDBAdapter Component**
+   - **Responsibilities**: 
+     - Encapsulates database access for user data.
+     - Creates queries based on user requests for registration and authentication.
+
+### 4. **Database Component**
+   - **Responsibilities**: 
+     - Represents the actual database (e.g., MySQL).
+     - Stores user information, salted password hashes, and metadata of audio files (e.g., name, genre).
+
+### 5. **MediaManagement Component**
+   - **Responsibilities**: 
+     - Central business logic component that coordinates communication between other components.
+     - Processes download requests and fetches audio files from storage.
+     - Forwards watermarked audio files to users after processing.
+
+### 6. **TagWatermarking Component**
+   - **Responsibilities**: 
+     - Digitally watermarks audio files to reduce copyright infringement risks.
+     - Re-encodes files before watermarking.
+
+### 7. **ReEncoder Component**
+   - **Responsibilities**: 
+     - Converts audio files to different bit rates, potentially reducing file sizes.
+
+### 8. **Packaging Component**
+   - **Responsibilities**: 
+     - Archives multiple audio files into a single compressed file for bulk downloads.
+
+### 9. **MediaAccess Component**
+   - **Responsibilities**: 
+     - Encapsulates database access for audio file metadata.
+     - Fetches a list of available audio files.
+     - Stores uploaded audio files in the designated storage location.
+
+### 10. **AudioAccess Component**
+   - **Responsibilities**: 
+     - Creates queries to retrieve available audio files from the Database component.
+
+### 11. **DataStorage Component**
+   - **Responsibilities**: 
+     - Represents the physical storage location for audio files (e.g., dedicated file server or local disk).
+     - Decouples audio file storage from the database.
+
+### Summary of Interactions:
+- Users interact with the **Facade Component** for registration, login, and file operations.
+- The **UserManagement Component** handles authentication and registration, utilizing the **UserDBAdapter** to interact with the **Database**.
+- The **MediaManagement Component** coordinates file operations, fetching files from **DataStorage** and processing them through **ReEncoder** and **TagWatermarking** before delivery.
+- The **MediaAccess Component** manages the storage and retrieval of audio file metadata, while the **AudioAccess Component** queries the database for available files.
+
+----------------------------------------------------------------------------------------------------
+
+TEASTORE
+
+
+### 1. **WebUI Service**
+   - **Functionality**: Acts as the front-end interface for users, providing the user experience through Servlets and JSP files.
+   - **Responsibilities**:
+     - Retrieves images from the Image Provider.
+     - Handles user interactions and displays product information.
+     - Manages cookies for session and state management.
+     - Provides a status page showing the state of the TeaStore.
+
+### 2. **Image Provider Service**
+   - **Functionality**: Supplies images to the WebUI, encoding them as base64 strings for embedding in HTML.
+   - **Responsibilities**:
+     - Matches product IDs or UI names to unique image identifiers.
+     - Handles image size requests, delivering the appropriate image or a standard "not found" image.
+     - Implements an in-memory cache with LFU replacement strategy for efficient image delivery.
+
+### 3. **Auth Service**
+   - **Functionality**: Manages user authentication and session management.
+   - **Responsibilities**:
+     - Handles user login and session validation.
+     - Hashes passwords using BCrypt.
+     - Validates session integrity using salted and hashed SessionBlobs stored in cookies.
+
+### 4. **Persistence Provider Service**
+   - **Functionality**: Provides access to the relational database for data persistence.
+   - **Responsibilities**:
+     - Maps relational entities to JSON objects using EclipseLink JPA ORM.
+     - Supports CRUD operations for persistent entities.
+     - Acts as a caching layer with a second-level entity cache.
+
+### 5. **Recommender Service**
+   - **Functionality**: Generates personalized product recommendations for users.
+   - **Responsibilities**:
+     - Trains on existing orders to provide recommendations based on user behavior.
+     - Implements collaborative filtering algorithms (Slope One and nearest-neighbor approaches).
+     - Adapts recommendations based on user history and current shopping cart.
+
+### 6. **Registry Service**
+   - **Functionality**: Maintains information about the service instances in the TeaStore.
+   - **Responsibilities**:
+     - Tracks the number of online service instances and their locations.
+     - Manages service registration and heartbeat signals to monitor service availability.
+     - Facilitates easy configuration of multiple parallel TeaStores.
+
+### 7. **Database (Relational Database Back-end)**
+   - **Functionality**: Stores persistent data for the application.
+   - **Responsibilities**:
+     - Serves as the backend for the Persistence Provider, holding all necessary data for the application.
+
+### Summary of Interactions:
+- The **WebUI** interacts with the **Image Provider** for images, the **Auth Service** for user authentication, the **Persistence Provider** for data access, and the **Recommender Service** for product recommendations.
+- The **Registry** keeps track of all service instances, ensuring that the system can scale and manage service availability effectively.
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+TEAMMATES
+
+### 1. **UI Component**
+   - **Description**: This component is responsible for the user interface of the application. It is built using the Angular framework and consists of HTML, SCSS, and TypeScript files.
+   - **Functionality**: 
+     - Renders the single-page application (SPA) for users.
+     - Handles client-side interactions (e.g., sorting, input validation) using JavaScript.
+     - Manages user requests through AJAX for asynchronous data fetching.
+
+### 2. **Logic Component**
+   - **Description**: This component encapsulates the business logic of the application.
+   - **Functionality**:
+     - Manages relationships between entities and handles transactions.
+     - Sanitizes input values and checks access control rights.
+     - Provides APIs for the UI to interact with the underlying data.
+     - Contains classes like `Logic`, `GateKeeper`, `EmailGenerator`, and `TaskQueuer`.
+
+### 3. **Storage Component**
+   - **Description**: This component is responsible for data persistence and CRUD operations.
+   - **Functionality**:
+     - Interacts with the GAE Datastore (a NoSQL database) to perform data operations.
+     - Validates data before creating or updating entities.
+     - Hides the complexities of the datastore from the Logic component.
+     - Contains packages for API, entity representation, and search functionalities.
+
+### 4. **Common Component**
+   - **Description**: This component contains utility classes and data transfer objects (DTOs) used across the application.
+   - **Functionality**:
+     - Provides helper classes and custom exceptions.
+     - Contains lightweight DTO classes for transferring structured data between components.
+
+### 5. **Test Driver Component**
+   - **Description**: This component automates the testing of the TEAMMATES application.
+   - **Functionality**:
+     - Contains infrastructure and helpers for running tests.
+     - Includes various test cases for different components (logic, storage, web API, etc.).
+     - Utilizes frameworks like TestNG for Java and Jest for JavaScript unit testing.
+
+### 6. **E2E Component**
+   - **Description**: This component is focused on end-to-end testing of the application.
+   - **Functionality**:
+     - Interacts with the application as a whole through web browsers or REST API calls.
+     - Uses Selenium Java for automating E2E tests and includes load and performance testing capabilities.
+
+### 7. **Client Component**
+   - **Description**: This component allows direct interaction with the application backend for administrative tasks.
+   - **Functionality**:
+     - Contains scripts for data migration and statistics calculation.
+     - Provides remote API classes to connect directly to the backend.
+
+### Summary of Interactions:
+- **User Requests**: The UI component receives user requests, which are processed by the UI server and forwarded to the Logic component via RESTful APIs.
+- **Data Handling**: The Logic component interacts with the Storage component to perform CRUD operations and manage business logic.
+- **Testing**: The Test Driver and E2E components ensure the application is thoroughly tested at various levels, from unit tests to full system tests.
+- **Administrative Tasks**: The Client component provides tools for administrators to manage data and perform backend operations directly.
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+BIGBLUEBUTTON
+
+### 1. **HTML5 Client**
+   - **Description**: A single-page responsive web application that serves as the user interface for BigBlueButton.
+   - **Technologies**: Built using React.js, WebRTC, Meteor.js, and MongoDB.
+   - **Functionality**: 
+     - Connects to the BigBlueButton server over SSL.
+     - Manages real-time communication and state synchronization with the server.
+     - Subscribes to published collections from the server to maintain meeting state.
+
+### 2. **HTML5 Server**
+   - **Description**: The backend server that handles client communications.
+   - **Scalability**: 
+     - Transitioned from a single Node.js process to multiple processes to utilize multiple CPU cores.
+     - Divided into frontend and backend processes for handling different types of events and messages.
+
+### 3. **BigBlueButton Web (bbb-web)**
+   - **Description**: A Java-based application written in Scala that implements the BigBlueButton API.
+   - **Functionality**: 
+     - Manages meeting state and provides integration with third-party applications (e.g., Moodle, WordPress).
+     - Acts as a front-end portal for users to access BigBlueButton features.
+
+### 4. **Redis PubSub**
+   - **Description**: A messaging system that facilitates communication between different applications running on the BigBlueButton server.
+   - **Functionality**: 
+     - Provides a channel for real-time event notifications and updates.
+
+### 5. **Redis Database**
+   - **Description**: A data store that records events during meetings.
+   - **Functionality**: 
+     - Stores recorded events and raw files for processing after a meeting ends.
+
+### 6. **Apps Akka**
+   - **Description**: The main application that coordinates various components for real-time collaboration.
+   - **Functionality**: 
+     - Manages meeting logic, user lists, chat, and presentations through the MeetingActor.
+
+### 7. **FSESL Akka**
+   - **Description**: A component that integrates with FreeSWITCH for voice conferencing.
+   - **Functionality**: 
+     - Allows for integration with different voice conference systems using Redis PubSub for communication.
+
+### 8. **FreeSWITCH**
+   - **Description**: A telephony platform that provides voice conferencing capabilities.
+   - **Functionality**: 
+     - Supports audio connections via WebRTC and traditional phone lines.
+
+### 9. **Kurento and WebRTC-SFU**
+   - **Description**: Media servers responsible for handling video and audio streams.
+   - **Functionality**: 
+     - Kurento Media Server (KMS) manages media streaming, while WebRTC-SFU handles media negotiations and stream management.
+
+### 10. **Presentation Conversion System**
+   - **Description**: A process that converts uploaded presentations for display in the client.
+   - **Functionality**: 
+     - Converts Office documents to PDF, then to SVG, and manages fallback options for heavy SVG files.
+
+### 11. **Internal Network Connections**
+   - **Description**: The architecture of how various components communicate internally.
+   - **Functionality**: 
+     - Utilizes sockets for inter-component communication, ensuring efficient data flow and event handling.
+
+------------------------------------------------------------------------------------------------------------------------------
+
+JABREF
+
+### 1. **Model Layer**
+- **Description**: This is the core of the architecture, containing the essential data structures and representing the application's state.
+- **Key Classes**:
+  - **BibDatases**: Represents collections of bibliographic entries.
+  - **BibEntries**: Represents individual bibliographic entries.
+  - **Events**: Represents events related to the model.
+- **Responsibilities**:
+  - Holds the primary data and state of the application.
+  - Contains minimal logic, primarily focused on data representation.
+- **Dependencies**: 
+  - Should not depend on any other classes in the application.
+
+### 2. **Logic Layer**
+- **Description**: Acts as an intermediary between the model and the GUI, containing the business logic of the application.
+- **Key Responsibilities**:
+  - Handles reading, writing, importing, exporting, and manipulating the model data.
+  - Provides an API for the GUI to interact with the model.
+- **Dependencies**:
+  - Only depends on the model classes, ensuring a clear separation of concerns.
+
+### 3. **GUI Layer**
+- **Description**: The outer shell of the application that interacts with the user.
+- **Key Responsibilities**:
+  - Manages user interactions and preferences.
+  - Displays data from the model and allows users to perform tasks.
+- **Dependencies**:
+  - Directly interacts with the logic layer to perform operations based on user input.
+
+### 4. **CLI Package**
+- **Description**: Contains classes that manage the command-line interface for the application.
+- **Key Responsibilities**:
+  - Provides functionality for users to interact with the application via command-line commands.
+- **Dependencies**:
+  - May depend on the logic layer to perform operations based on CLI commands.
+
+### 5. **Preferences Package**
+- **Description**: Manages user-specific settings and configurations.
+- **Key Responsibilities**:
+  - Stores and retrieves customizable information for users.
+- **Dependencies**:
+  - Interacts with the GUI to allow users to modify their preferences.
+
+### 6. **Event Bus**
+- **Description**: A mechanism for communication between different layers of the application.
+- **Key Responsibilities**:
+  - Publishes events from the model to the logic and GUI layers, allowing them to react to changes in the model.
+- **Dependencies**:
+  - Facilitates communication without creating direct dependencies between layers.
+
+### 7. **Testing Framework (JUnit)**
+- **Description**: A testing framework used to ensure the integrity of the architecture.
+- **Key Responsibilities**:
+  - Detects violations of dependencies between the logic, model, and GUI layers.
+  - Ensures that the build fails if crucial dependency rules are violated.
+
+### Summary of Architecture
+- **Vertical Structuring**: Each layer is organized into packages based on their responsibilities, promoting a clean and maintainable codebase.
+- **Dependency Direction**: Dependencies flow inward towards the model, ensuring that the core data structures remain isolated from the outer layers.
+- **Event-Driven Communication**: The use of an event bus allows for a responsive architecture that can react to changes in the model without tightly coupling the layers.
+
+------------------------------------------------------------------------------------------------------------------------------
+

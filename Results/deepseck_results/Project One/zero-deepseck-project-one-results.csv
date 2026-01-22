@@ -1,0 +1,22 @@
+Based on the modular monolith requirements, here's the microservices decomposition in CSV format:
+
+```csv
+Microservice,Responsibilities,Communicates With
+UserService,User registration; User authentication; Password hashing and salting; Session management,DatabaseService; GatewayService
+GatewayService,Web frontend delivery; Session management; Request routing; User redirection after login,UserService; MediaService; FileStorageService
+MediaService,Audio file listing; Download request processing; Upload coordination; Business logic orchestration,UserService; FileStorageService; WatermarkService; PackagingService; DatabaseService
+WatermarkService,Audio file watermarking; Audio file re-encoding,MediaService; FileStorageService
+PackagingService,Archive creation for bulk downloads; File compression,MediaService; FileStorageService
+FileStorageService,Audio file storage; File retrieval; File upload handling,MediaService; WatermarkService; PackagingService
+DatabaseService,User data storage; Audio metadata storage; Query execution,UserService; MediaService
+```
+
+**Key decomposition rationale:**
+1. **UserService** combines UserManagement and UserDBAdapter responsibilities
+2. **GatewayService** handles Facade component responsibilities
+3. **MediaService** centralizes MediaManagement and MediaAccess logic
+4. **FileStorageService** handles DataStorage and AudioAccess responsibilities
+5. **DatabaseService** maintains database abstraction
+6. **WatermarkService** and **PackagingService** are specialized services for their specific domains
+
+This decomposition follows domain-driven design principles, with each service having clear bounded contexts and well-defined communication patterns.

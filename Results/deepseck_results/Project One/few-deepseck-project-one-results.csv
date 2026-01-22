@@ -1,0 +1,26 @@
+Based on the provided requirements, here is the list of microservices in CSV format:
+
+```csv
+Microservice,Responsibilities,Communicates With
+Gateway,Server-side web front end; Delivers registration/login pages; Manages user sessions; Allows browsing/downloading/uploading; Forwards to listing page after login,UserService; MediaService
+UserService,Handles user registration and authentication; Implements password hashing and salting,UserDatabaseService
+UserDatabaseService,Encapsulates database access for user data; Creates queries for registration and authentication,Database
+MediaService,Central business logic coordination; Processes download requests; Fetches audio files from storage; Forwards watermarked files to users,WatermarkingService; ReEncoderService; PackagingService; MediaMetadataService
+WatermarkingService,Digitally watermarks audio files; Re-encodes files before watermarking,ReEncoderService; StorageService
+ReEncoderService,Converts audio files to different bit rates; Reduces file sizes,StorageService
+PackagingService,Archives multiple audio files into single compressed files for bulk downloads,MediaMetadataService; StorageService
+MediaMetadataService,Encapsulates database access for audio file metadata; Fetches list of available audio files; Stores uploaded file metadata,AudioMetadataService; StorageService
+AudioMetadataService,Creates queries to retrieve available audio files from database,Database
+StorageService,Manages physical storage for audio files; Decouples audio file storage from database,None
+Database,Stores user information, salted password hashes, and audio file metadata,None
+```
+
+**Key Design Decisions:**
+1. **Gateway Service**: Combines Facade responsibilities with session management and routing
+2. **UserService**: Focuses on authentication/registration business logic, separated from database access
+3. **MediaService**: Acts as orchestrator for media-related operations
+4. **Separated Concerns**: Audio metadata access separated from user data access
+5. **Storage Abstraction**: StorageService provides unified interface to physical storage
+6. **Database as Service**: Treated as a service for consistency, though in practice might be shared infrastructure
+
+Note: The "Communicates With" column shows direct service-to-service communication. In a real implementation, you might use message queues or event-driven patterns for some interactions (particularly between MediaService and its dependent services).

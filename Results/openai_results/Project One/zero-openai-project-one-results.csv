@@ -1,0 +1,9 @@
+Microservice,Responsibilities,Communicates With
+Web Facade,Serve registration and login pages; manage user sessions; allow browsing downloading uploading of audio files; forward users to audio list after login,Auth Service; Media Catalog; Media Orchestrator
+Auth Service,Handle user registration and authentication; hash and salt passwords; manage user identities,Web Facade
+Media Catalog,Encapsulate metadata access; fetch list of available audio files; store uploaded audio files; manage audio metadata,Web Facade; Media Orchestrator; Media Storage Service
+Media Orchestrator,Coordinate communication between services; process download requests; fetch audio from storage; orchestrate re-encoding watermarking packaging; forward processed files to users,Web Facade; Media Catalog; Re-Encoding Service; Watermarking Service; Packaging Service; Media Storage Service
+Re-Encoding Service,Convert audio files to different bit rates; reduce file sizes,Media Orchestrator; Media Storage Service
+Watermarking Service,Digitally watermark audio files; apply watermark after re-encoding,Media Orchestrator; Media Storage Service
+Packaging Service,Archive multiple audio files into a single compressed file for bulk downloads,Media Orchestrator; Media Storage Service
+Media Storage Service,Provide physical storage for audio files; store and retrieve audio content; decouple audio file storage from database,Media Catalog; Media Orchestrator; Re-Encoding Service; Watermarking Service; Packaging Service

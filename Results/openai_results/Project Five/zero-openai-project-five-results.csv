@@ -1,0 +1,6 @@
+Microservice,Responsibilities,Communicates With
+Bibliography Service,Owns bibliographic model BibDatabases and BibEntries and authoritative data store; Provides CRUD and validation APIs; Emits domain Events on changes; Enforces referential integrity and basic invariants,Event Bus
+Import/Export Service,Import bibliographic data from multiple formats BibTeX; RIS; EndNote; CSL JSON; Export model data to supported formats; Map and normalize fields; Perform batch operations; Publish import and export progress and results,Bibliography Service; Event Bus
+Search Service,Maintain search index from model events; Provide full text and fielded search; Support faceting and filtering; Perform incremental reindexing,Event Bus
+Preferences Service,Store and retrieve user preferences and configurations; Manage defaults and profiles; Validate and version settings,None
+Event Bus,Provide pub and sub messaging backbone; Route model and application events between services; Ensure loose coupling and back pressure; Support at least once delivery and topic management,Bibliography Service; Import/Export Service; Search Service; Preferences Service

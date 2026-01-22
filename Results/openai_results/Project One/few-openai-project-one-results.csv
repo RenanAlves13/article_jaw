@@ -1,0 +1,12 @@
+Microservice,Responsibilities,Communicates With
+Facade,Serves as the server-side web front end; Delivers registration and login pages to users; Manages user sessions; Allows users to browse download and upload audio files; Forwards users to the audio file listing page after login,UserManagement; MediaManagement
+UserManagement,Handles user registration and authentication; Implements password hashing and salting for security,UserDBAdapter
+UserDBAdapter,Encapsulates database access for user data; Creates queries based on user requests for registration and authentication,Database
+Database,Represents the actual database e.g. MySQL; Stores user info and salted password hashes and metadata of audio files e.g. name and genre,None
+MediaManagement,Central business logic component that coordinates communication between other components; Processes download requests and fetches audio files from storage; Forwards watermarked audio files to users after processing; Orchestrates upload storing listing watermarking re-encoding and packaging,MediaAccess; TagWatermarking; ReEncoder; Packaging; DataStorage
+TagWatermarking,Digitally watermarks audio files to reduce copyright infringement risks; Re-encodes files before watermarking,ReEncoder
+ReEncoder,Converts audio files to different bit rates to reduce file size,None
+Packaging,Archives multiple audio files into a single compressed file for bulk downloads,None
+MediaAccess,Encapsulates database access for audio file metadata; Fetches a list of available audio files; Stores uploaded audio files in the designated storage location,AudioAccess; DataStorage
+AudioAccess,Creates queries to retrieve available audio files from the Database component,Database
+DataStorage,Represents the physical storage location for audio files e.g. dedicated file server or local disk; Decouples audio file storage from the database,None

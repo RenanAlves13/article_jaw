@@ -1,0 +1,12 @@
+Microservice,Responsibilities,Communicates With
+HTML5 Client,Single page UI; real time state sync; connect over SSL; subscribe to server collections; manage WebRTC media sessions,HTML5 Server; Kurento and WebRTC-SFU; FreeSWITCH
+HTML5 Server,Handle client signaling; manage subscriptions and publications; scale across processes; frontend and backend event handling; bridge to event bus; persist meeting events,HTML5 Client; Redis PubSub; Redis Database; Apps Akka; Presentation Conversion System; Kurento and WebRTC-SFU
+BigBlueButton Web bbb-web,Expose BigBlueButton API; manage meetings lifecycle; integrate with third party portals; authenticate and route users,Apps Akka; Redis PubSub; HTML5 Server
+Redis PubSub,Real time messaging; publish subscribe channels; event fanout,HTML5 Server; Apps Akka; FSESL Akka; BigBlueButton Web bbb-web
+Redis Database,Store meeting events; store raw recordings; provide data for post processing,HTML5 Server; Apps Akka; Presentation Conversion System
+Apps Akka,Coordinate real time collaboration; manage meeting logic; manage user list chat and presentations; maintain meeting state,Redis PubSub; HTML5 Server; BigBlueButton Web bbb-web; FSESL Akka; Kurento and WebRTC-SFU; Redis Database; Presentation Conversion System
+FSESL Akka,Integrate with FreeSWITCH; manage voice conferences; translate events to and from event bus,FreeSWITCH; Redis PubSub; Apps Akka
+FreeSWITCH,Provide voice conferencing; bridge WebRTC audio and phone lines,FSESL Akka; HTML5 Client
+Kurento and WebRTC-SFU,Handle video and audio streams; perform media negotiation; manage stream topology,HTML5 Client; Apps Akka; HTML5 Server
+Presentation Conversion System,Convert documents to PDF; convert PDF to SVG; manage fallback for heavy SVG; prepare assets for client,HTML5 Server; Apps Akka; Redis Database
+Internal Network Connections,Provide socket based inter service communication; ensure efficient data flow; route events between components,HTML5 Server; Apps Akka; FSESL Akka; BigBlueButton Web bbb-web; Redis PubSub; Presentation Conversion System
