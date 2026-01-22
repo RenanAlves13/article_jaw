@@ -1,7 +1,0 @@
-,,services,services,total_comms,total_comms,avg_comms,avg_comms,density,density,isolated_services,avg_resp_length,avg_resp_length,avg_vocab_size,avg_vocab_size,redundancy_ratio,redundancy_ratio
-,,mean,std,mean,std,mean,std,mean,std,mean,mean,std,mean,std,mean,std
-model,setting,,,,,,,,,,,,,,,
-deepseck,few_shot,9.5,2.1213,19.0,4.2426,2.1023,0.916,0.2692,0.1749,1.0,11.9659,0.3053,11.2273,0.3214,1.0,0.0
-deepseck,zero_shot,9.5,3.5355,21.0,2.8284,2.3155,0.564,0.3133,0.1967,0.0,9.2738,0.7913,8.5536,0.9849,1.0,0.0
-openai,few_shot,9.0,2.8284,18.5,7.7782,2.3052,1.5887,0.3448,0.3205,2.0,23.039,5.1977,20.1623,4.2151,1.0,0.0
-openai,zero_shot,7.5,0.7071,24.0,0.0,3.2143,0.303,0.5,0.101,0.0,21.7411,10.0636,19.0625,8.3969,1.0,0.0

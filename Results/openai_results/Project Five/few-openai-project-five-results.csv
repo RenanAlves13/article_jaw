@@ -1,8 +1,0 @@
-Microservice, Responsibilities, Communicates With
-Model Service, Holds the primary data and state of the application; Contains minimal logic focused on data representation, Event Bus
-Logic Service, Handles reading; writing; importing; exporting; manipulating model data; Provides an API for the GUI and CLI to interact with the model, Model Service; Event Bus
-GUI Service, Manages user interactions and preferences; Displays data from the model; Allows users to perform tasks, Logic Service; Preferences Service; Event Bus
-CLI Service, Provides command-line interface for the application; Executes operations based on CLI commands, Logic Service
-Preferences Service, Stores and retrieves customizable user information; Integrates with the GUI to allow users to modify preferences, GUI Service
-Event Bus, Publishes model events to subscribers; Decouples communication between services via pub-sub, Model Service; Logic Service; GUI Service
-Testing Framework (JUnit), Detects violations of dependencies between the logic; model; and GUI layers; Fails the build if dependency rules are violated, Model Service; Logic Service; GUI Service

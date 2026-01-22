@@ -1,8 +1,0 @@
-Microservice, Responsibilities, Communicates With
-UI Component, Renders the SPA for users; Handles client-side interactions such as sorting and input validation using JavaScript; Manages user requests through AJAX for asynchronous data fetching, Logic Component
-Logic Component, Manages relationships between entities and handles transactions; Sanitizes input values; Checks access control rights; Provides APIs for the UI to interact with underlying data; Generates emails; Queues background tasks, Storage Component
-Storage Component, Interacts with the GAE Datastore to perform data operations; Performs CRUD; Validates data before creating or updating entities; Hides datastore complexity from the Logic component; Provides search functionality, None
-Common Component, Provides helper classes and custom exceptions; Contains lightweight DTO classes for transferring structured data between components, None
-Test Driver Component, Provides infrastructure and helpers for running tests; Includes test cases for logic storage web API and UI; Executes unit and integration tests using TestNG and Jest, UI Component; Logic Component; Storage Component
-E2E Component, Automates end-to-end tests via web browsers or REST API calls; Performs load and performance testing, UI Component; Logic Component
-Client Component, Supports administrative operations via direct backend interaction; Runs scripts for data migration and statistics calculation; Provides remote API classes to connect to the backend, Logic Component; Storage Component
